@@ -1,7 +1,6 @@
 from src.benchmark import benchmark
 from src.colorgraph import color_graph
 
-
 menu_map = {
     "0": benchmark,
     "1": color_graph,
