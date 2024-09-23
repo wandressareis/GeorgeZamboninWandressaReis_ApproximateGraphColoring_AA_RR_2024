@@ -1,0 +1,3 @@
+algorithm_name,graph_filename,color_count,duration_ns
+chromaticNumber,queen5_5.col.txt,9,44103
+chromaticNumber,queen5_5.col.txt,6,66014
