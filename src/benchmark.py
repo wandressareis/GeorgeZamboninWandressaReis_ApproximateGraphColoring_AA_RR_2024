@@ -17,7 +17,7 @@ Usage mode:
 3) all outputs are save in the file called execution_log.txt
 """
 
-BINARY_PROGRAM_LIST = ["src/algorithms/first_fit"]
+BINARY_PROGRAM_LIST = ["src/algorithms/first_fit", "src/algorithms/chromatic_algo"]
 INPUTS_FILE = "graphs"
 TIMES_RUN = 13
 PATH_FILES_INPUT_LIST = []

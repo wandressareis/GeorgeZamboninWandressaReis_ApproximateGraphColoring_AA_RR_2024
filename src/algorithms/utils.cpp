@@ -85,3 +85,31 @@ void write_csv(char* algorithm_name, char* graph_filename, int color_count, unsi
   fprintf(csv, "%s,%s,%d,%llu\n", algorithm_name, graph_filename, color_count, duration);
   fclose(csv);
 }
+
+// Function to read the graph from .col file
+void readGraph(const string& filename, vector<vector<int>>& graph, int& numVertices, int& numEdges) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Could not open the file!" << endl;
+        return;
+    }
+
+    string line;
+    while (getline(file, line)) {
+        if (line[0] == 'p') {
+            stringstream ss(line);
+            string tmp;
+            ss >> tmp >> tmp >> numVertices >> numEdges;
+            graph.resize(numVertices);
+        }
+        else if (line[0] == 'e') {
+            stringstream ss(line);
+            char edge;
+            int u, v;
+            ss >> edge >> u >> v;
+            u--; v--; // Convert to zero-indexed
+            graph[u].push_back(v);
+            graph[v].push_back(u);
+        }
+    }
+}
