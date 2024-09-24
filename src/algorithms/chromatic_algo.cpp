@@ -10,7 +10,7 @@
 
 using namespace std;
 
-// Function to check if assigning the color to node is valid
+// Function to check if assigning color to node is valid
 bool isValidColor(int node, int color, const vector<int>& colors, const vector<vector<int>>& graph) {
     for (int neighbor : graph[node]) {
         if (colors[neighbor] == color) {
@@ -25,9 +25,12 @@ bool colorGraph(int node, int k, vector<int>& colors, const vector<vector<int>>&
     if (node == graph.size()) {
         return true;  // All nodes colored successfully
     }
+    
+    // Try all colors from 1 to k
     for (int color = 1; color <= k; ++color) {
         if (isValidColor(node, color, colors, graph)) {
             colors[node] = color;  // Assign color to the node
+            
             if (colorGraph(node + 1, k, colors, graph)) {
                 return true;  // Continue coloring the next node
             }
@@ -37,24 +40,25 @@ bool colorGraph(int node, int k, vector<int>& colors, const vector<vector<int>>&
     return false;  // No valid coloring found with k colors
 }
 
-// Function to find the exact chromatic number using binary search
-vector<int> exactVertexColoring(const vector<vector<int>>& graph) {
+// Function to find the chromatic number
+int findChromaticNumber(const vector<vector<int>>& graph) {
     int n = graph.size();
-    vector<int> colors(n, -1); // To store colors of vertices, initialized to -1
-    int low = 1, high = n;
-
-    while (low < high) {
+    vector<int> colors(n, 0);  // Color assignments for vertices
+    int low = 1, high = n, chromaticNumber = n;
+    
+    while (low <= high) {
         int mid = (low + high) / 2;
         fill(colors.begin(), colors.end(), 0);  // Reset color assignments
-
+        
         if (colorGraph(0, mid, colors, graph)) {
-            high = mid;  // Try to lower the number of colors
+            chromaticNumber = mid;  // Found a valid coloring with mid colors
+            high = mid - 1;         // Try to reduce the number of colors
         } else {
-            low = mid + 1;  // Increase the number of colors
+            low = mid + 1;          // Increase the number of colors
         }
     }
-
-    return colors;  // The chromatic number
+    
+    return chromaticNumber;
 }
 
 int main(int argc, char* argv[]){
@@ -70,6 +74,11 @@ int main(int argc, char* argv[]){
     // Step 1: Read the graph from the .col file
     readGraph(filepath, graph, numVertices, numEdges);
 
+    if (numVertices > 100 || numEdges > 200) {
+        // write_csv(algorithm_name, filename, 0, (long long unsigned int) 0);
+        return 0;
+    }
+
     // Step 2: Apply the First-Fit Greedy Coloring algorithm
 
     // measure execution time:
@@ -77,22 +86,21 @@ int main(int argc, char* argv[]){
     struct timespec start, end;
 
     clock_gettime(CLOCK_MONOTONIC, &start);
-    vector<int> colors = exactVertexColoring(graph);
+    //vector<int> colors = exactVertexColoring(graph);
+    int chromatic_number = findChromaticNumber(graph);
     clock_gettime(CLOCK_MONOTONIC, &end);
 
     diff = BILLION * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec;
 
     // Step 3: Output the result
-    cout << "Vertex Coloring:\n";
-    for (int i = 0; i < colors.size(); i++) {
-        cout << "Vertex " << i + 1 << " ---> Color " << colors[i] << endl;
-    }
+    // cout << "Vertex Coloring:\n";
+    // for (int i = 0; i < colors.size(); i++) {
+    //     cout << "Vertex " << i + 1 << " ---> Color " << colors[i] << endl;
+    // }
 
-    double max = *std::max_element(colors.begin(), colors.end());
-    std::cout << "Max value: " << max << std::endl;
-    write_csv(algorithm_name, filename, max+1, (long long unsigned int) diff);
-
-    return 0;
+    // double max = *std::max_element(colors.begin(), colors.end());
+    // std::cout << "Max value: " << max << std::endl;
+    write_csv(algorithm_name, filename, chromatic_number, (long long unsigned int) diff);
 
     return 0;
 }
