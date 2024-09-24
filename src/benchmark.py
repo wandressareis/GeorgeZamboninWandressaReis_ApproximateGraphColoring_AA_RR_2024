@@ -7,6 +7,7 @@ import shlex
 import subprocess
 import logging
 import pandas as pd
+from threading import Timer
 
 logging.basicConfig(level=logging.DEBUG, filename='run_exp_data.log', filemode='w', format='%(process)d - [%(asctime)s] : %(levelname)s -> %(message)s')
 
@@ -44,12 +45,24 @@ def run_code():
                             stdout=subprocess.PIPE, 
                             stderr=subprocess.PIPE,
                             universal_newlines=True)
-                    stdout, stderr = process.communicate()            
-                    if not stderr:
+                    
+                    timer = Timer(5, process.kill)
+                    
+                    try:
+                        timer.start()
+                        stdout, stderr = process.communicate()
+                    finally:
+                        timer.cancel()
+
+                    if not stderr and stdout:
                         logging.debug(f"Program output: - Time {count_time}")
                         logging.debug(f"---------------------------")
                         logging.debug(stdout)
                         logging.debug(f"---------------------------")
+                    else:
+                        logging.error(f"---------------------------"\
+                                      f"error while running {BINARY_PROGRAM} for {input}: time limit exceed")
+                        break
 
 def show_results():
     results = pd.read_csv("log.csv")

@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "utils.hpp"
+#include <stdexcept>
 
 #define BILLION 1000000000L
 
@@ -74,10 +75,9 @@ int main(int argc, char* argv[]){
     // Step 1: Read the graph from the .col file
     readGraph(filepath, graph, numVertices, numEdges);
 
-    if (numVertices > 100 || numEdges > 200) {
-        // write_csv(algorithm_name, filename, 0, (long long unsigned int) 0);
-        return 0;
-    }
+    // if (numVertices > 100 || numEdges > 200) {
+    //     throw std::invalid_argument("Compute time for current input exceed");
+    // }
 
     // Step 2: Apply the First-Fit Greedy Coloring algorithm
 
@@ -101,6 +101,7 @@ int main(int argc, char* argv[]){
     // double max = *std::max_element(colors.begin(), colors.end());
     // std::cout << "Max value: " << max << std::endl;
     write_csv(algorithm_name, filename, chromatic_number, (long long unsigned int) diff);
+    printf("Chromatic number: %d\n", chromatic_number);
 
     return 0;
 }
