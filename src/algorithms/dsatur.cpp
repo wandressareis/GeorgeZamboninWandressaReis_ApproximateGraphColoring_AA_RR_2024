@@ -197,7 +197,7 @@ int main(int argc, char* argv[]){
 
     double max = *std::max_element(colors.begin(), colors.end());
     std::cout << "Max value: " << max << std::endl;
-    write_csv(algorithm_name, filename, max, (long long unsigned int) diff);
+    write_csv(algorithm_name, filename, numVertices, numEdges, max+1, (long long unsigned int) diff);
 
     return 0;
 }

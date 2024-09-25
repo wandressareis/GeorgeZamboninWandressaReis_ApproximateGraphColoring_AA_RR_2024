@@ -46,7 +46,7 @@ def run_code():
                             stderr=subprocess.PIPE,
                             universal_newlines=True)
                     
-                    timer = Timer(60, process.kill)
+                    timer = Timer(2, process.kill)
                     
                     try:
                         timer.start()

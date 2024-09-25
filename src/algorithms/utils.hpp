@@ -23,5 +23,5 @@ int count_file_lines(char file_name[]);
 void get_path_filename(char* buffer, char* path);
 int get_filename_n(char* filename);
 char get_filename_order(char* filename);
-void write_csv(char* algorithm_name, char* graph_filename, int color_count, unsigned long long duration);
+void write_csv(char* algorithm_name, char* graph_filename, int numVertices, int numEdges, int color_count, unsigned long long duration);
 void readGraph(const string& filename, vector<vector<int>>& graph, int& numVertices, int& numEdges);
