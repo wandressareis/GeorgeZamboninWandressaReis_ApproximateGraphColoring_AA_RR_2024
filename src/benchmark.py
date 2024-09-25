@@ -18,7 +18,7 @@ Usage mode:
 3) all outputs are save in the file called execution_log.txt
 """
 
-BINARY_PROGRAM_LIST = ["src/algorithms/first_fit", "src/algorithms/chromatic_algo"]
+BINARY_PROGRAM_LIST = ["src/algorithms/first_fit", "src/algorithms/dsatur", "src/algorithms/chromatic_algo"]
 INPUTS_FILE = "graphs"
 TIMES_RUN = 13
 PATH_FILES_INPUT_LIST = []
@@ -46,7 +46,7 @@ def run_code():
                             stderr=subprocess.PIPE,
                             universal_newlines=True)
                     
-                    timer = Timer(5, process.kill)
+                    timer = Timer(60, process.kill)
                     
                     try:
                         timer.start()
