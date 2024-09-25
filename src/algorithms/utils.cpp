@@ -73,16 +73,16 @@ char get_filename_order(char* filename) {
   return filename[0];
 }
 
-void write_csv(char* algorithm_name, char* graph_filename, int color_count, unsigned long long duration) {
+void write_csv(char* algorithm_name, char* graph_filename, int numVertices, int numEdges, int color_count, unsigned long long duration) {
   char filename[] = "log.csv";
   FILE* csv;
   if (!(access("log.csv", F_OK) != -1)) {
     csv = fopen(filename, "w");
-    fprintf(csv, "algorithm_name,graph_filename,color_count,duration_ns\n");
+    fprintf(csv, "algorithm_name,graph_filename,num_vertices,numEdges,color_count,duration_ns\n");
   } else {
     csv = fopen(filename, "a");
   }
-  fprintf(csv, "%s,%s,%d,%llu\n", algorithm_name, graph_filename, color_count, duration);
+  fprintf(csv, "%s,%s,%d,%d,%d,%llu\n", algorithm_name, graph_filename, numVertices, numEdges, color_count, duration);
   fclose(csv);
 }
 
